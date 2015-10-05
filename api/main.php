@@ -17,6 +17,7 @@ class main extends api
     return
     [
       'design' => 'main/home',
+      'script' => 'img',
     ];
   }
 }
