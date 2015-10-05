@@ -23,46 +23,50 @@ __this.DeferCascade(function()
   var drops = [];
   //x below is the x coordinate
   //1 = y co-ordinate of the drop(same for every drop initially)
-  for (var y = 0; y < 1; y++)
-  {
-    drops[y] = [];
-    for(var x = 0; x < columns; x++)
-      drops[y][x] = Math.floor(Math.random() * img.height / (1 + y)); // restart imideately
-  }
+  for(var x = 0; x < columns; x++)
+    drops[x] = Math.floor(Math.random() * img.height);
 
-    ctx.fillStyle = "rgb(0, 0, 0)";
-    ctx.fillRect(0, 0, c.width, c.height);
+
+  ctx.fillStyle = "rgb(0, 0, 0)";
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.font = font_size + "px arial";
+
+  var colors =
+  [
+    "92, 29, 146,",
+    "35, 14, 100,", 
+    "4, 4, 52,", 
+    "7, 13, 124,",
+    "31, 139, 201,",
+  ];
+
+  var slices = 10;
+  var max_slices = 15;
+
+  var min = (max_slices - slices);
 
   //drawing the characters
   function draw()
   {
     //Black BG for the canvas
     //translucent BG to show trail
-    ctx.fillStyle = "rgba(0, 0, 0, 0.005)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.001)";
     ctx.fillRect(0, 0, c.width, c.height);
     
-    ctx.fillStyle = "#0F0"; //green text
-    ctx.font = font_size + "px arial";
     //looping over drops
-    for (var rd = 0; rd < drops.length; rd++)
-    for(var i = 0; i < drops[rd].length; i++)
+    for(var i = 0; i < drops.length; i++)
     {
       var x = Math.floor(i + Math.random() * 2);
-      var y = drops[rd][i];
+      var y = drops[i];
 
       if(y >= img.height)
       {
-        if (Math.random() > 0.99)
-          drops[rd][i] = 0;
+        drops[i] = 0;
         continue;
       }
       if (x >= img.width)
         continue;
 
-
-      //a random chinese character to print
-      var text = chinese[Math.floor(Math.random()*chinese.length)];
-      
       var pixel = img.pixel(x, y);
 
       if (pixel === undefined)
@@ -70,45 +74,34 @@ __this.DeferCascade(function()
       else
       {
         pixel = 255 - pixel;
-        var slices = 10;
-        var max_slices = 15;
-
-        var min = (max_slices - slices);
 
         var slice = pixel / (256 / slices);
         
         var cur = Math.ceil(min + slice);
-        if (cur < 0)
-          cur = 0;
-        if (cur > 15)
-          cur = 15;
-        var hex = cur.toString(16);
 
         var ratio = 1 - cur / 15;
         if (ratio < 0.3)
           ratio = 0;
-        var colors =
-        [
-          "92, 29, 146,",
-          "35, 14, 100,", 
-          "4, 4, 52,", 
-          "7, 13, 124,",
-          "31, 139, 201,",
-        ];
+
         var color = colors[Math.floor(Math.random()*colors.length)];
 
         ctx.fillStyle = "rgba(" + color + ratio + ")";
       }
 
+      //a random chinese character to print
+      var text = chinese[Math.floor(Math.random()*chinese.length)];
       //x = i*font_size, y = value of drops[i]*font_size
       ctx.fillText(text, x*font_size, y*font_size);
             
       //incrementing Y coordinate
-      drops[rd][i] += Math.floor(Math.random() * 2);
+      drops[i] += 1 + Math.floor(Math.random() * 5);
     }
   }
 
-  setInterval(draw, 33);
+  for (var init = 0; init < 100; init++)
+    setTimeout(draw, 0);
+
+  setInterval(draw, 50);
 
 })
 %>
