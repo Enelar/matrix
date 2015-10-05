@@ -1,0 +1,7 @@
+*.log
+vendor
+composer.lock
+get_stop.in*
+get_stop.out*
+phoxy
+upload/files
