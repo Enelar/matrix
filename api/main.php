@@ -17,6 +17,14 @@ class main extends api
     return
     [
       'design' => 'main/home',
+    ];
+  }
+
+  protected function Img()
+  {
+    return
+    [
+      'design' => 'main/img',
       'script' => 'img',
     ];
   }

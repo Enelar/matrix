@@ -1,0 +1,25 @@
+<img src='img.jpg' style='opacity: 0.01' />
+
+<%
+debugger;
+this.escape().recursive++;
+__this.Defer(function()
+{
+  var imgtag = __this.first()[0];
+
+  if (imgtag.width == 0)
+    return phoxy.Defer(arguments.callee, 100);
+  var canvas = document.createElement('canvas');
+  canvas.width = img.width = imgtag.width;
+  canvas.height = img.height = imgtag.height;
+  canvas.getContext('2d').drawImage(imgtag, 0, 0, img.width, img.height);
+  var data = canvas.getContext('2d').getImageData(0, 0, img.width, img.height).data;
+
+  for (var y = 0; y < img.height; y++)
+    for (var x = 0; x < img.width; x++)
+      img.pixeldata.push(data[y * img.width * 4 + x * 4]);
+
+  __this.escape().CheckIsCompleted.call(__this);
+})
+  
+%>
