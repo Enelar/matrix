@@ -38,7 +38,7 @@ __this.DeferCascade(function()
   {
     //Black BG for the canvas
     //translucent BG to show trail
-    ctx.fillStyle = "rgba(0, 0, 0, 0.02)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.01)";
     ctx.fillRect(0, 0, c.width, c.height);
     
     ctx.fillStyle = "#0F0"; //green text
@@ -47,7 +47,9 @@ __this.DeferCascade(function()
     for (var rd = 0; rd < drops.length; rd++)
     for(var i = 0; i < drops[rd].length; i++)
     {
-      var x = i;
+      if (i & 2)
+        continue;
+      var x = Math.floor(i + Math.random() * 3);
       var y = drops[rd][i];
 
       if(y >= img.height)
@@ -87,14 +89,24 @@ __this.DeferCascade(function()
         var ratio = 1 - cur / 15;
         if (ratio < 0.3)
           ratio = 0;
-        ctx.fillStyle = "rgba(0, 255, 0, " + ratio + ")";
+        var colors =
+        [
+          "92, 29, 146,",
+          "35, 14, 100,", 
+          "4, 4, 52,", 
+          "7, 13, 124,",
+          "31, 139, 201,",
+        ];
+        var color = colors[Math.floor(Math.random()*colors.length)];
+
+        ctx.fillStyle = "rgba(" + color + ratio + ")";
       }
 
       //x = i*font_size, y = value of drops[i]*font_size
       ctx.fillText(text, x*font_size, y*font_size);
             
       //incrementing Y coordinate
-      drops[rd][i]++;
+      drops[rd][i] += Math.floor(Math.random() * 3);
     }
   }
 
